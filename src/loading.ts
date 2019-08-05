@@ -2,7 +2,8 @@
     Author: Malte Rosenbjerg
     License: MIT */
 
-import { Package, INxtx } from '../nxtx';
+import {INxtx, NodeType, Package} from '../nxtx-interface';
+
 declare const nxtx: INxtx;
 
 let loaded = {
@@ -35,6 +36,7 @@ const pkg : Package = {
 
         'load:package': srcNode => new Promise((acc, rej) => {
             const argsOk = nxtx.verifyArguments([], srcNode);
+            console.log('args ok?', argsOk);
             if (loaded.packages[srcNode.value])
                 return acc();
             loaded.packages[srcNode.value] = true;
@@ -51,7 +53,18 @@ const pkg : Package = {
                 }
             };
             document.head.appendChild(script);
-        })
+        }),
+
+        'load:nxtxorg:package': (srcNode, minify = { type: NodeType.Boolean, value: true }) => {
+            const min = minify.value ? '.min' : '';
+            const ext = !srcNode.value.endsWith('.js') ? '.js' : '';
+            const url = `https://nxtxorg.github.io/${srcNode.value}/build/${srcNode.value}${min}${ext}`;
+            return {
+                type: NodeType.Command,
+                name: 'load:package',
+                args: [ { type: NodeType.String, value: url } ]
+            }
+        }
     }
 };
 
