@@ -105,8 +105,6 @@ var loading = (function () {
                 });
             }); },
             'load:package': function (srcNode) { return new Promise(function (acc, rej) {
-                var argsOk = nxtx.verifyArguments([], srcNode);
-                console.log('args ok?', argsOk);
                 if (loaded.packages[srcNode.value])
                     return acc();
                 loaded.packages[srcNode.value] = true;

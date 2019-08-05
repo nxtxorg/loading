@@ -35,8 +35,6 @@ const pkg : Package = {
         },
 
         'load:package': srcNode => new Promise((acc, rej) => {
-            const argsOk = nxtx.verifyArguments([], srcNode);
-            console.log('args ok?', argsOk);
             if (loaded.packages[srcNode.value])
                 return acc();
             loaded.packages[srcNode.value] = true;
